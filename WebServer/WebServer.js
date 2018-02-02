@@ -15,6 +15,14 @@ app.use(bodyParser.json()) // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
 
 let tweets = []
+function acceptsHtml (header) {
+  console.log(header);
+  var accepts = header.split(',')
+  for (i = 0; i < accepts.length; i += 1) {
+    if (accepts[i] === 'text/html') { return true }
+  }
+  return false
+}
 
 app.get('/', function (req, res) {
   res.send('Welcome to Node Twitter')
@@ -23,7 +31,15 @@ app.get('/', function (req, res) {
 app.post('/send', function (req, res) {
   if (req.body && req.body.tweet) {
     tweets.push(req.body.tweet)
-    res.send({ status: 'OK', message: 'Tweet received' })
+
+    if (acceptsHtml(req.headers['content-type'])) {
+      // 状态码: 302
+      // "location": "/"
+      res.redirect('/', 302)
+    } else {
+      res.send({ status: 'OK', message: 'Tweet received' })
+    }
+
   } else {
     res.send({ status: 'NOK', message: 'No Tweet received' })
   }
