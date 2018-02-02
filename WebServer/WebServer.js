@@ -6,10 +6,13 @@
 // console.log('Server running at http://127.0.0.1:9000/')
 
 // Express 增加了两样 http 模块所没有的功能：根据 HTTP 请求的不同方法进行过滤，根据特定的 URL 进行过滤
-const express = require('express')
+const app = require('express')()
 const bodyParser = require('body-parser')
-const app = express()
+
 app.listen(9000)
+
+app.use(bodyParser.json()) // for parsing application/json
+app.use(bodyParser.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
 
 let tweets = []
 
@@ -17,8 +20,7 @@ app.get('/', function (req, res) {
   res.send('Welcome to Node Twitter')
 })
 
-app.post('/send', bodyParser.json(), function (req, res) {
-  console.log(req);
+app.post('/send', function (req, res) {
   if (req.body && req.body.tweet) {
     tweets.push(req.body.tweet)
     res.send({ status: 'OK', message: 'Tweet received' })
