@@ -1,10 +1,3 @@
-// let http = require('http')
-// http.createServer(function (req, res) {
-// 	res.writeHead(200, {'Content-Type': 'text/plain'})
-// 	res.end('Hello World\n')
-// }).listen(9000, '127.0.0.1')
-// console.log('Server running at http://127.0.0.1:9000/')
-
 // 创建 TCP 服务器
 let net = require('net')
 let chatServer = net.createServer(),
