@@ -5,7 +5,7 @@ let chatServer = net.createServer(),
 
 chatServer.on('connection', function (client) {
 	client.name = client.remoteAddress + ':' + client.remotePort
-	client.write('Hi '+ client.name +' ! \n')
+	client.write('Hi ' + client.name + ' ! \n')
 	console.log(client.name + ' joined')
 
 	clientList.push(client)
@@ -23,7 +23,7 @@ chatServer.on('connection', function (client) {
 	})
 })
 
-function broadcast(message, client) {
+function broadcast (message, client) {
 	let cleanup = []
 	for (let i = 0; i < clientList.length; i++) {
 		if (client !== clientList[i]) {
@@ -39,7 +39,7 @@ function broadcast(message, client) {
 
 	// 在写入循环中删除死节点，消除垃圾索引
 	for (let i = 0; i < cleanup.length; i++) {
-		clientList.splice(clientList.indexOf(cleanup[i]), 1)		
+		clientList.splice(clientList.indexOf(cleanup[i]), 1)
 	}
 }
 
