@@ -55,3 +55,35 @@
 // '8843d7f92416211de9ebb963ff4ce28125932878'
 // >
 // 因为数据在 hash.update() 调用时是串联起来的，所以两个示例得到的结果是一样的
+
+
+// Node 提供的 HMAC API 和 Hash API 是一样的。唯一的不同是，创建 hmac
+// 对象时需要在传入哈希算法的同时，再传入一个密钥
+// 创建 Hmac 对象需要的密钥必须是一个 PEM 编码的密钥，以字符串的格式传入
+// Enki: ~$ openssl genrsa - out key.pem 1024
+// Generating RSA private key, 1024 bit long modulus
+// ...++++++
+// ............................++++++
+// e is 65537(0x10001)
+// Enki: ~$
+// 这个例子创建的是一个 PEM 格式的 RSA 密钥，并保存在一个文件里（在本例中是key.pem ）
+// > var crypto = require('crypto');
+// > var fs = require('fs');
+// >
+// // 因为在许多情况下，读取密钥会放在服务器
+// // 启动任务中。这个时候，我们可以用同步的方式来读取密钥（但会使服务器启动时间
+// // 稍微变长）。因为你还没开始服务任何客户，所以把事件循环堵塞一会儿并没有什么问题
+// > var pem = fs.readFileSync('key.pem');  // sync 同步
+// > var key = pem.toString('ascii');
+// >
+// > var hmac = crypto.createHmac('sha1', key);
+// >
+// > hmac.update('foo');
+// { }
+// > hmac.digest('hex');
+// '7b058f2f33ca28da3ff3c6506c978825718c7d42'
+// >
+
+
+// 公钥加密
+// Cipher 把数据加密， Decipher 解密数据， Sign 为数据创建加密签名， Verify 验证加密签名
